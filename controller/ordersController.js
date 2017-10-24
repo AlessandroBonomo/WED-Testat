@@ -21,7 +21,7 @@ module.exports.showIndex = function(req, res)
         res.write("< Willkommen! Zu der besten Pizzaria auf der Welt!</p>");
         res.write("<img src='/images/pizza.jpg'>");
         res.write("<form action='/notice' method='get'><input type='submit' value='Add a Notice'></form>");
-        res.write("" + notices.all);
+        res.write("" + req.session.id);
         res.end("</html>");
 
     } else {
@@ -57,7 +57,7 @@ module.exports.createNotice = function(req, res)
 
 module.exports.addNotice = function(req, res)
 {
-     notices.add(req.body.title, req.body.importance, req.body.notice, function(err, notice) {
+     notices.add(req.body.title, req.body.importance, req.body.notice,  function(err, notice) {
         res.type('text/html');
         res.write("<html>");
         res.write("<p>Erfolgreich!</p>");
