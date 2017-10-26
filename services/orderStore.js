@@ -2,9 +2,10 @@ const Datastore = require('nedb');
 const db = new Datastore({ filename: './data/order.db', autoload: true });
 
 
-function Notice(notice, importance, finishedDate)
+function Notice(title, notice, importance, finishedDate)
 {
     // this.orderedBy = orderedBy;
+    this.title = title;
     this.notice = notice;
     this.importance = importance;
     this.finishedDate = finishedDate;
@@ -14,15 +15,27 @@ function Notice(notice, importance, finishedDate)
 }
 
 
-function publicAddNotice(notice, importance, finishedDate, callback)
+function publicAddNotice(title, notice, importance, finishedDate, callback)
 {
-    let noticeAdd = new Notice(notice, importance, finishedDate);
+    let noticeAdd = new Notice(title, notice, importance, finishedDate);
     db.insert(noticeAdd, function(err, newDoc){
         if(callback){
             callback(err, newDoc);
         }
     });
 }
+
+
+
+
+function getAllNotices(callback)
+{
+    db.find({}, function (err, docs) {
+        callback(err, docs);
+    });
+}
+
+
 
 
 
@@ -45,4 +58,4 @@ function publicAll()
     });
 }
 
-module.exports = {add : publicAddNotice, delete : publicRemove, get : publicGet, all : publicAll};
+module.exports = {add : publicAddNotice, delete : publicRemove, get : publicGet, all : publicAll, getAll : getAllNotices};
