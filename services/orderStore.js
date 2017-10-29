@@ -2,7 +2,7 @@ const Datastore = require('nedb');
 const db = new Datastore({ filename: './data/order.db', autoload: true });
 
 
-function Notice(notice, importance, finishedDate)
+function Notice(notice, importance, finishedDate, sessionID)
 {
     // this.orderedBy = orderedBy;
     this.notice = notice;
@@ -11,12 +11,13 @@ function Notice(notice, importance, finishedDate)
     this.addedDate = JSON.stringify(new Date());
     this.state = "open";
     this.style = "white";   //style als boolean?
+    this.sessionID = sessionID;
 }
 
 
-function publicAddNotice(notice, importance, finishedDate, callback)
+function publicAddNotice(notice, importance, finishedDate, sessionID, callback)
 {
-    let noticeAdd = new Notice(notice, importance, finishedDate);
+    let noticeAdd = new Notice(notice, importance, finishedDate, sessionID);
     db.insert(noticeAdd, function(err, newDoc){
         if(callback){
             callback(err, newDoc);
