@@ -1,25 +1,7 @@
 const notices = require("../services/orderStore.js");
 
 
-module.exports.node = function (req, res) {
-    res.type('text/html');
-    res.write("<html>");
-
-    res.write("<body>");
-    res.write("<label>" + "Title" + "</label>" +
-        "<input name='nodeTitle' type='text'/>" +
-        "<label>" + "Beschreibung" + "</label>" +
-        "<textarea name='nodeDescription'></textarea>" +
-        "<label>" + "Wichtigkeit" + "</label>" +
-        "<label>" + "Erledigt bis:" + "</label>" +
-        "<input name='date' type='date'/>" +
-        "<input name='btnSave' type='submit' value='Speichern'/>" +
-        "<input name='btnCancel' type='submit' value='Cancel'/>");
-    res.write("</body>");
-    res.end("</html>");
-};
-
-module.exports.mainMenu = function (req, res) {
+module.exports.showMainMenu = function (req, res) {
     res.type('text/html');
     res.write("<html>");
 
@@ -34,21 +16,43 @@ module.exports.mainMenu = function (req, res) {
         "</style>");
 
     res.write("<body>");
-    //res.write("<input name='btnNewNode' type='submit' value='Create new Note'/>");
-    //res.write("<input name='btnSwitch' type='submit' value='Switch Style'>");
-    //res.write("<input name='btnFinishDate' type='submit' value='By finish Date'/>");
-    //res.write("<input name='btnCreateDate' type='submit' value='By created Date'/>");
-    //res.write("<input name='btnImportance' type='submit' value='By Importance'/>");
-    //res.write("<input name='btnShowFinished' type='submit' value='Show finished'/>");
-
-    res.write("<form action='/node' method='get'>" +
+    res.write("<form action='/notice' method='get'>" +
         "<input type='submit' value='Create new Note'>" +
-        "<input type='submit' value='Switch Style'>" +
+        "</form>");
+    res.write("<input type='submit' value='Switch Style'>" +
         "<input type='submit' value='By finish Date'/>" +
         "<input type='submit' value='By created Date'/>" +
         "<input type='submit' value='By Importance'/>" +
         "<input type='submit' value='Show finished'/>" +
         "</form>");
+
+
+
+
+    /*notices.getAll(function (err, docs) {
+        res.write("<input type='submit' value='Chammela'/>");
+    });*/
+
+
+    /*notices.getNotices( function (err, notices) {
+     for(i = 0; i < notices.length; i++) {
+     res.write("<article class='article'>" +
+     "<div class='titleDiv'>" +
+     "<label name='date'>" + "Date" + "</label>" +
+     "<label class='title' name='title'>" + "Titel" + "</label>" +
+     "</div>" +
+     "<div class='inputDiv'>" +
+     "<label>" +
+     "<input class='finishedCheckbox' type='checkbox' value='Finished'/>" +
+     "Finished" +
+     "</label>" +
+     "<textarea class='descriptionArea'></textarea>" +
+     "<input type='submit' value='Edit' class='editButton'/>" +
+     "</div>" +
+     "</article>");
+     }
+     });*/
+
 
 
     for(i = 0; i < 5; i++) {
@@ -72,6 +76,9 @@ module.exports.mainMenu = function (req, res) {
     res.end("</html>");
 };
 
+module.exports.createNotice = function (req, res) {
+    res.type('text/html');
+    res.write("<html>");
 
 
 
@@ -119,11 +126,26 @@ module.exports.createNotice = function(req, res)
         res.write("<input type='submit' value='OK'>")
 
             //"<input name='importance'><input type='submit' value='Order a Pizza'><input type='date' name='dateFinished' placeholder=''><input type='submit' value='Order a Pizza'></form>");
+    res.write("<body>");
+    res.write("<form action='/notice' method='post'>" +
+        "<label>" + "Title" + "</label>" +
+        "<input name='nodeTitle' type='text'/>" +
+        "<label>" + "Beschreibung" + "</label>" +
+        "<textarea name='nodeDescription'></textarea>" +
+        "<label>" + "Wichtigkeit" + "</label>" +
+        "<label>" + "Erledigt bis:" + "</label>" +
+        "<input name='date' type='date'/>" +
+        "<input name='btnSave' type='submit' value='Speichern'/>" +
+        "</form>" +
+        "<input name='btnCancel' type='submit' value='Cancel'/>");
+    res.write("</body>");
+    res.end("</html>");
 };
 
 module.exports.addNotice = function(req, res)
 {
      notices.add(req.body.title, req.body.importance, req.body.notice, req.session.id,  function(err, notice) {
+    notices.add(req.body.nodeTitle, req.body.nodeDescription, 4, req.body.date, function(err, notice) {
         res.type('text/html');
         res.write("<html>");
         res.write("<p>Erfolgreich!</p>");
@@ -134,7 +156,18 @@ module.exports.addNotice = function(req, res)
     });
 };
 
-module.exports.showOrder = function(req, res)
+
+
+
+
+
+
+
+
+
+
+
+/*module.exports.showOrder = function(req, res)
 {
      store.get(req.params.id, function(err, notice) {
         res.type('text/html');
@@ -149,7 +182,7 @@ module.exports.showOrder = function(req, res)
         res.write("<form action='/' method='get'><input type='submit' value='Zurueck zum start'></form>");
         res.end("</html>");
     });
-};
+};*/
 
 module.exports.deleteOrder =  function (req, res)
 {
